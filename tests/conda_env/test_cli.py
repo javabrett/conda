@@ -157,20 +157,16 @@ class IntegrationTests(unittest.TestCase):
         Test `conda env create` without an environment.yml file
         Should fail
         '''
-        try:
-            run_env_command(Commands.ENV_CREATE, None)
-        except Exception as e:
-            self.assertIsInstance(e, EnvironmentFileNotFound)
+        with pytest.raises(EnvironmentFileNotFound):
+            run_env_command(Commands.ENV_CREATE, test_env_name_42)
 
     def test_conda_env_create_no_existent_file(self):
         '''
         Test `conda env create --file=not_a_file.txt` with a file that does not
         exist.
         '''
-        try:
+        with pytest.raises(EnvironmentFileNotFound):
             run_env_command(Commands.ENV_CREATE, None, '--file', 'not_a_file.txt')
-        except Exception as e:
-            self.assertIsInstance(e, EnvironmentFileNotFound)
 
     def test_create_valid_remote_env(self):
         run_env_command(Commands.ENV_CREATE, None, 'goanpeca/env-42')
