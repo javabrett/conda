@@ -8,8 +8,7 @@ from .binstar import BinstarSpec
 from .notebook import NotebookSpec
 from .requirements import RequirementsSpec
 from .yaml_file import YamlFileSpec
-from ..exceptions import (EnvironmentFileExtensionNotValid, EnvironmentFileNotFound,
-                          SpecNotFound)
+from ..exceptions import (EnvironmentFileExtensionNotValid, SpecNotFound)
 
 
 def detect(**kwargs):
@@ -41,7 +40,7 @@ def detect(**kwargs):
             return spec
 
     if not file_exists and remote_definition is None:
-        raise EnvironmentFileNotFound(filename=filename)
+        pass
     else:
         raise SpecNotFound(build_message(spec_instances))
 
