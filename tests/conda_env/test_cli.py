@@ -83,7 +83,7 @@ def run_env_command(command, prefix, *arguments):
         arguments[1:1] = ['-n', prefix]
     elif command is Commands.ENV_CREATE: # CREATE
         if prefix:
-            arguments[1:1] = ['-f', prefix]
+            arguments[1:1] = ['-n', prefix]
     elif command is Commands.ENV_REMOVE:  # REMOVE
         arguments[1:1] = ['--yes', '-n', prefix]
     elif command is Commands.ENV_UPDATE:
@@ -169,6 +169,16 @@ class IntegrationTests(unittest.TestCase):
         '''
         try:
             run_env_command(Commands.ENV_CREATE, None, '--file', 'not_a_file.txt')
+        except Exception as e:
+            self.assertIsInstance(e, EnvironmentFileNotFound)
+
+    def test_conda_env_create_no_existent_file_with_name(self):
+        '''
+        Test `conda env create --file=not_a_file.txt` with a file that does not
+        exist.
+        '''
+        try:
+            run_env_command(Commands.ENV_CREATE, "my_name", '--file', 'not_a_file.txt')
         except Exception as e:
             self.assertIsInstance(e, EnvironmentFileNotFound)
 
